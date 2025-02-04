@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/register_bloc.dart';
 import '../../domain/entities/user_entity.dart';
+import '../login/dashboard_screen.dart';
 
 class RegisterPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
@@ -15,16 +16,24 @@ class RegisterPage extends StatelessWidget {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  RegisterPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Registro")),
+      appBar: AppBar(title: const Text("Registro")),
       body: BlocConsumer<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state is RegisterSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Usuario registrado con éxito")),
+              const SnackBar(content: Text("Usuario registrado con éxito")),
             );
+            // Redirigir al Dashboard después de registrar al usuario
+            Future.delayed(Duration(seconds: 1), () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const DashboardScreen()),
+              );
+            });
           } else if (state is RegisterFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error)),
@@ -33,52 +42,24 @@ class RegisterPage extends StatelessWidget {
         },
         builder: (context, state) {
           if (state is RegisterLoading) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Form(
               key: _formKey,
-              child: Column(
+              child: ListView(
                 children: [
-                  TextFormField(
-                    controller: _nombreController,
-                    decoration: InputDecoration(labelText: "Nombre"),
-                  ),
-                  TextFormField(
-                    controller: _apellidoPaController,
-                    decoration: InputDecoration(labelText: "Apellido Paterno"),
-                  ),
-                  TextFormField(
-                    controller: _apellidoMaController,
-                    decoration: InputDecoration(labelText: "Apellido Materno"),
-                  ),
-                  TextFormField(
-                    controller: _sexoController,
-                    decoration: InputDecoration(labelText: "Sexo"),
-                  ),
-                  TextFormField(
-                    controller: _fechaNacimientoController,
-                    decoration: InputDecoration(labelText: "Fecha de Nacimiento"),
-                  ),
-                  TextFormField(
-                    controller: _direccionController,
-                    decoration: InputDecoration(labelText: "Dirección"),
-                  ),
-                  TextFormField(
-                    controller: _telefonoController,
-                    decoration: InputDecoration(labelText: "Teléfono"),
-                  ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(labelText: "Email"),
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(labelText: "Contraseña"),
-                  ),
-                  SizedBox(height: 20),
+                  _buildTextField(_nombreController, "Nombre"),
+                  _buildTextField(_apellidoPaController, "Apellido Paterno"),
+                  _buildTextField(_apellidoMaController, "Apellido Materno"),
+                  _buildTextField(_sexoController, "Sexo"),
+                  _buildTextField(_fechaNacimientoController, "Fecha de Nacimiento"),
+                  _buildTextField(_direccionController, "Dirección"),
+                  _buildTextField(_telefonoController, "Teléfono"),
+                  _buildTextField(_emailController, "Email", isEmail: true),
+                  _buildTextField(_passwordController, "Contraseña", isPassword: true),
+                  const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -96,12 +77,37 @@ class RegisterPage extends StatelessWidget {
                         context.read<RegisterBloc>().register(user);
                       }
                     },
-                    child: Text("Registrar"),
+                    child: const Text("Registrar"),
                   ),
                 ],
               ),
             ),
           );
+        },
+      ),
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label,
+      {bool isEmail = false, bool isPassword = false}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextFormField(
+        controller: controller,
+        obscureText: isPassword,
+        keyboardType: isEmail ? TextInputType.emailAddress : TextInputType.text,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+        validator: (value) {
+          if (value == null || value.trim().isEmpty) {
+            return "Este campo es obligatorio";
+          }
+          if (isEmail && !RegExp(r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$").hasMatch(value)) {
+            return "Ingrese un correo válido";
+          }
+          return null;
         },
       ),
     );

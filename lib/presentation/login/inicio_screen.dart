@@ -94,7 +94,18 @@ class InicioScreen extends StatelessWidget {
             right: 20,
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(90), // Bordes redondeados
+                borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                border: Border.all(
+                color: const Color.fromARGB(255, 149, 176, 249),
+              ),
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xBA10E3FF),
+                    Color(0xFF0CF1F1),
+                  ], //color degradado
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomRight,
+                )
               ),
               child: ElevatedButton(
                 onPressed: () {
@@ -106,9 +117,11 @@ class InicioScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                  backgroundColor: const Color(0xFF0F1657), // Color de fondo sólido
+                  backgroundColor:  const Color.fromARGB(0, 228, 17, 17), // Color de fondo transparente para ver el degrado
+                  
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(90), // Redondeado como el contenedor
+                    borderRadius: BorderRadius.circular(10), // Redondeado como el contenedor
+                    
                   ),
                   textStyle: const TextStyle(
                     fontSize: 16,
