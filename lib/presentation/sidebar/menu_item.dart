@@ -6,11 +6,11 @@ class MenuItem extends StatelessWidget {
   final VoidCallback onTap;
   
   const MenuItem({
-    Key? key, // Corregido para permitir valores nulos
+    super.key, // Corregido para permitir valores nulos
     required this.icon,
     required this.title,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

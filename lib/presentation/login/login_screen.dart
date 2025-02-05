@@ -1,7 +1,8 @@
 // screens/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import '../pages/register_data.dart';
+import 'package:prueba3/presentation/pages/personalized_plan.dart';
+//import '../pages/register_data.dart';
 //import '../sidebar/sidebar_layout.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -40,8 +41,9 @@ class LoginScreen extends StatelessWidget {
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           //builder: (context) => const DashboardScreen(),
-          builder: (context) => const RegisterDatosScreen(),
+          //builder: (context) => const RegisterDatosScreen(),
           //builder: (context) => SideBarLayout() // Muestra la pantalla de registro antes del dashboard
+          builder: (context) => PersonalizedPlan(),
         ));
       },
       onRecoverPassword: _recoverPassword,

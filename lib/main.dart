@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login Demo',
+      title: 'Pal-GYM',
       theme: ThemeData(
 
         scaffoldBackgroundColor: const Color(0xFF000C3B), // Fondo principal del scaffold
