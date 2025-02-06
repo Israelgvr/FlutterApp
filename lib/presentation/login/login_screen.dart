@@ -1,34 +1,73 @@
-// screens/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:dio/dio.dart';
+import 'package:prueba3/data/api/api_service.dart';
+import 'package:prueba3/data/models/login_request.dart';
 import 'package:prueba3/presentation/pages/personalized_plan.dart';
-//import '../pages/register_data.dart';
-//import '../sidebar/sidebar_layout.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../sidebar/sidebar.dart';
+import '../sidebar/sidebar_layout.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
-  Duration get loginTime => const Duration(milliseconds: 2250);
+  final Duration loginTime = const Duration(milliseconds: 2250);
 
-  Future<String?> _authUser(LoginData data) {
-    return Future.delayed(loginTime).then((_) {
-      if (data.name != 'usuario@gmail.com' || data.password != '12345') {
-        return 'Usuario o contraseña incorrectos';
+  Future<String?> _authUser(LoginData data) async {
+    try {
+      final dio = Dio();
+      final apiService = ApiService(dio);
+
+      final loginRequest = LoginRequest(
+        correo: data.name,
+        password: data.password,
+      );
+
+      final response = await apiService.login(loginRequest);
+
+      if (response.token.isNotEmpty) {
+        // Aquí puedes guardar el token si es necesario.
+        // Guardar el token usando SharedPreferences
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('auth_token', response.token);
+
+        // También puedes guardar información del usuario si es necesario
+        await prefs.setString('user_name', response.user.nombres);
+        await prefs.setString('user_email', response.user.correo);
+
+
+
+        return null;  // Login exitoso, no se devuelve error.
+      } else {
+        return 'Credenciales incorrectas';
       }
-      return null;
-    });
+    } on DioError catch (e) {
+      // Verificamos si el error tiene una respuesta de la API
+      if (e.response != null && e.response?.data != null) {
+        final errorMessage = e.response?.data['message'];
+
+        // Retornamos el mensaje de error que la API proporciona
+        return errorMessage ?? 'Error desconocido al iniciar sesión';
+      } else {
+        // Error de conexión o inesperado
+        return 'No se pudo conectar al servidor. Intenta de nuevo.';
+      }
+    } catch (e) {
+      // Cualquier otro error inesperado
+      return 'Error inesperado: ${e.toString()}';
+    }
   }
 
-  Future<String?> _signupUser(SignupData data) {
-    return Future.delayed(loginTime).then((_) {
-      return null;
-    });
+
+  Future<String?> _signupUser(SignupData data) async {
+    // Lógica para registro de usuario si la necesitas
+    return null;
   }
 
-  Future<String> _recoverPassword(String name) {
-    return Future.delayed(loginTime).then((_) {
-      return 'No se encontró un usuario con ese correo';
-    });
+  Future<String?> _recoverPassword(String name) async {
+    return 'No se encontró un usuario con ese correo';
   }
 
   @override
@@ -40,18 +79,13 @@ class LoginScreen extends StatelessWidget {
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          //builder: (context) => const DashboardScreen(),
-          //builder: (context) => const RegisterDatosScreen(),
-          //builder: (context) => SideBarLayout() // Muestra la pantalla de registro antes del dashboard
-          builder: (context) => PersonalizedPlan(),
+          builder: (context) => SideBarLayout(),
         ));
       },
       onRecoverPassword: _recoverPassword,
       messages: LoginMessages(
         userHint: 'Correo electrónico',
         passwordHint: 'Contraseña',
-        confirmPasswordHint: 'Confirmar contraseña',
-        forgotPasswordButton: '¿Olvidaste tu contraseña?',
         loginButton: 'Iniciar sesión',
         signupButton: 'Registrarse',
         recoverPasswordButton: 'Recuperar contraseña',
@@ -70,9 +104,6 @@ class LoginScreen extends StatelessWidget {
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
-        bodyStyle: const TextStyle(
-          color: Colors.white,
-        ),
         textFieldStyle: const TextStyle(
           color: Colors.black,
         ),
@@ -88,28 +119,7 @@ class LoginScreen extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(15)),
           ),
         ),
-        inputTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.grey[200],
-          contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(15),
-            borderSide: BorderSide.none,
-          ),
-        ),
-        buttonTheme: LoginButtonTheme(
-          backgroundColor: const Color(0xFF000C3B),
-          splashColor: const Color(0xFFF5A623),
-          highlightColor: const Color(0xFF0F1657),
-          elevation: 4.0,
-          highlightElevation: 6.0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-
-        ),
       ),
     );
   }
 }
-

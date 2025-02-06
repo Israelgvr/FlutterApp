@@ -100,8 +100,8 @@ class InicioScreen extends StatelessWidget {
               ),
                 gradient: const LinearGradient(
                   colors: [
-                    Color(0xBA10E3FF),
-                    Color(0xFF0CF1F1),
+                    Color(0xFF103271),
+                    Color(0xFFE4E7EA),
                   ], //color degradado
                   begin: Alignment.topRight,
                   end: Alignment.bottomRight,
