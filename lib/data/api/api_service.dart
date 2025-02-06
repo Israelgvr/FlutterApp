@@ -7,10 +7,12 @@ import 'package:prueba3/data/models/login_response.dart';
 
 part 'api_service.g.dart';
 
-@RestApi(baseUrl: "https://translated-compromise-simpson-relaxation.trycloudflare.com/api")
+@RestApi(baseUrl: "http://localhost:9000/api")
 abstract class ApiService {
   factory ApiService(Dio dio, {String baseUrl}) = _ApiService;
 
   @POST("/login")
   Future<LoginResponse> login(@Body() LoginRequest request);
+
+
 }
