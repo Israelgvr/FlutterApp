@@ -64,6 +64,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
           left: isSideBarOpenedAsync.data! ? 0 : -screenWidth,//screenWidth para que se esconda junto con el menu
           right: isSideBarOpenedAsync.data! ? 0 : screenWidth - 45,
           child: Row(
+            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Expanded(
                 child: SingleChildScrollView(
@@ -74,11 +75,11 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: 90,
+                        height: 110,
                       ),
                       
                       Container(
-                        color: Colors.redAccent,
+                        color: const Color.from(alpha: 1, red: 0.922, green: 0.847, blue: 0.027),
                         padding: EdgeInsets.all(0.0),
                         child: ListTile(  
                           leading: CircleAvatar(
@@ -115,7 +116,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                       ),
                       MenuItem(
                         icon: Icons.home,
-                        title: "home",
+                        title: "Principal",
                         onTap: () {
                           onIconPressed();
                           //print("Enviando evento: HomePageClickedEvent"); // Agregar print
@@ -180,7 +181,7 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                 ),
               ),
               Align(
-                alignment: Alignment(0, -0.9),
+                alignment: Alignment(0, -0.9),//posicion del icon x
                 child: GestureDetector(
                   onTap: () {
                     onIconPressed();
