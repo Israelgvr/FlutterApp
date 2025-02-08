@@ -22,10 +22,10 @@ class MenuItem extends StatelessWidget {
           children: <Widget>[
             Icon(
               icon,
-              color: Colors.cyan,// Azul para contraste
-              size: 24,
+              color: Colors.white,// Azul para contraste
+              size: 30,
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 15),//separacion entre iconos y titulos de opciones
             Text(
               title,
               style: const TextStyle(

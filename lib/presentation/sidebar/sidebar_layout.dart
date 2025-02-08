@@ -26,8 +26,8 @@ class SideBarLayout extends StatelessWidget {
                 if (navigationState is MyAccountsPageState) {
                   return MyAccountsPage(); // Aquí devolvemos el widget MyAccountsPage
                 }
-                if (navigationState is MyOrdersPageState) {
-                  return MyOrdersPage(); // Aquí devolvemos el widget MyOrdersPage
+                if (navigationState is MyHistoryState) {
+                  return MyHistory(); // Aquí devolvemos el widget MyOrdersPage
                 }
                 return Container(); // Un widget por defecto si no es un Widget
               },

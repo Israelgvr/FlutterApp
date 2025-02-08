@@ -1,7 +1,7 @@
 // screens/login_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:prueba3/presentation/pages/personalized_plan.dart';
+//import 'package:prueba3/presentation/pages/personalized_plan.dart';
 //import '../pages/register_data.dart';
 import '../sidebar/sidebar_layout.dart';
 

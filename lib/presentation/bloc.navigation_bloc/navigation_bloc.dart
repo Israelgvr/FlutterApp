@@ -12,7 +12,7 @@ abstract class NavigationStates {}
 
 class HomePageState extends NavigationStates {}
 class MyAccountsPageState extends NavigationStates {}
-class MyOrdersPageState extends NavigationStates {}
+class MyHistoryState extends NavigationStates {}
 
 // El constructor de NavigationBloc debe registrar los eventos correctamente
 class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
@@ -28,7 +28,7 @@ class NavigationBloc extends Bloc<NavigationEvents, NavigationStates> {
           emit(MyAccountsPageState());
           break;
         case NavigationEvents.MyOrdersClickedEvent:
-          emit(MyOrdersPageState());
+          emit(MyHistoryState());
           break;
       }
     });

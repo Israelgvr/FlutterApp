@@ -1,8 +1,6 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-//import 'package:rxdart/rxdart.dart';
 
 import '../bloc.navigation_bloc/navigation_bloc.dart';
 import '../sidebar/menu_item.dart';
@@ -64,49 +62,43 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
           left: isSideBarOpenedAsync.data! ? 0 : -screenWidth,//screenWidth para que se esconda junto con el menu
           right: isSideBarOpenedAsync.data! ? 0 : screenWidth - 45,
           child: Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Expanded(
-                child: SingleChildScrollView(
+              Expanded(  
                 child: Container(
-                  padding: EdgeInsets.all(0.0),
-                  color: const Color(0xFF262AAA),
+                  height: MediaQuery.of(context).size.height, // Asegura que el sidebar ocupe toda la pantalla
+                  color: const Color(0xFD242531),
                   //datos user cabecera
                   child: Column(
                     children: <Widget>[
-                      SizedBox(
-                        height: 110,
-                      ),
-                      
+                      Padding(padding: EdgeInsets.all(20)),
                       Container(
-                        color: const Color.from(alpha: 1, red: 0.922, green: 0.847, blue: 0.027),
-                        padding: EdgeInsets.all(0.0),
-                        child: ListTile(  
-                          leading: CircleAvatar(
-                            radius: 40,
-                            child: Icon(
-                              Icons.perm_identity,
-                              color: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 20), // Espacio superior e inferior
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [  
+                            CircleAvatar(
+                              radius: 35, // Radio del avatar espacio ocupa
+                              //backgroundColor: Colors.white,
+                              child: Icon(
+                                Icons.perm_identity,
+                                size: 50,//tamaño icon
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          title: Text(
-                            "Prateek",
-                            style: TextStyle(
-                              color: Colors.white, 
-                              fontSize: 30, 
-                              fontWeight: FontWeight.w800, 
-                              backgroundColor: Color(0xFFE60707)
+                            SizedBox(height: 10,),
+                            //widget para los datos usuario
+                            Text(
+                              "Helena Chung",
+                              style: TextStyle(
+                                color: Colors.white, 
+                                fontSize: 28, 
+                                fontWeight: FontWeight.w800, 
+                              ),
                             ),
-                          ),
-                          subtitle: Text(
-                            "www.techieblossom.com",
-                            style: TextStyle(
-                              color: Color(0xFF1BB5FD),
-                              fontSize: 18,
-                            ),
-                          ),
+                          ],
                         ),
                       ),
+
                       Divider(
                         height: 64,
                         thickness: 0.5,
@@ -114,70 +106,118 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                         indent: 32,//margen izquierdo
                         endIndent: 32,//margen derecho
                       ),
-                      MenuItem(
-                        icon: Icons.home,
-                        title: "Principal",
-                        onTap: () {
-                          onIconPressed();
-                          //print("Enviando evento: HomePageClickedEvent"); // Agregar print
-                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.HomePageClickedEvent);
-                        },
-                      ),
-                      MenuItem(
-                        icon: Icons.person,
-                        title: "Perfile",
-                        onTap: () {
-                          onIconPressed();
-                          //print("Enviando evento: MyAccountClickedEvent");
-                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.MyAccountClickedEvent);
-                        },
-                      ),
-                      MenuItem(
-                        icon: Icons.shopping_basket,
-                        title: "Historial",
-                        onTap: () {
-                          onIconPressed();
-                          //print("Enviando evento: MyOrdersClickedEvent");
-                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.MyOrdersClickedEvent);
-                        },
-                      ),
-                      MenuItem(
-                        icon: Icons.card_giftcard,
-                        title: "Nivel de Actividad",
-                        onTap: () {
-                          onIconPressed();
-                          //print("Enviando evento: MyOrdersClickedEvent");
-                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.MyOrdersClickedEvent);
-                        },
-                      ),
-                      Divider(
-                        height: 64,
-                        thickness: 0.5,
-                        color: Colors.white.withOpacity(0.3),
-                        indent: 32,
-                        endIndent: 32,
-                      ),
-                      MenuItem(
-                        icon: Icons.settings,
-                        title: "Notificaciones",
-                        onTap: () {
-                          onIconPressed();
-                          //print("Enviando evento: MyOrdersClickedEvent");
-                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.MyOrdersClickedEvent);
-                        },
-                      ),
-                      MenuItem(
-                        icon: Icons.exit_to_app,
-                        title: "Logout",
-                        onTap: () {
-                          onIconPressed();
-                          //print("Enviando evento: MyOrdersClickedEvent");
-                          BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.MyOrdersClickedEvent);
-                        },
+
+                      //menu de opciones
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 20, top: 10), // Margen izquierdo y superior
+                              child: Text(
+                                "Menú",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            // Lista de opciones del menú
+                            Padding(
+                              padding: EdgeInsets.only(left: 15), // Margen izquierdo para todas las opciones
+                              child: Column(
+                                children: [
+                                  MenuItem(
+                                    icon: Icons.home,
+                                    title: "Principal",
+                                    onTap: () {
+                                      onIconPressed();
+                                      BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.HomePageClickedEvent);
+                                    },
+                                  ),
+                                  MenuItem(
+                                    icon: Icons.person,
+                                    title: "Perfil",
+                                    onTap: () {
+                                      onIconPressed();
+                                      BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.MyAccountClickedEvent);
+                                    },
+                                  ),
+                                  MenuItem(
+                                    icon: Icons.history,
+                                    title: "Historial",
+                                    onTap: () {
+                                      onIconPressed();
+                                      BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.MyOrdersClickedEvent);
+                                    },
+                                  ),
+                                  MenuItem(
+                                    icon: Icons.directions_run,
+                                    title: "Nivel de Actividad",
+                                    onTap: () {
+                                      onIconPressed();
+                                      
+                                    },
+                                  ),
+                                  MenuItem(
+                                    icon: Icons.notifications,
+                                    title: "Notificaciones",
+                                    onTap: () {
+                                      onIconPressed();
+                                      
+                                    },
+                                  ),
+                                  MenuItem(
+                                    icon: Icons.health_and_safety,
+                                    title: "Diagnostico",
+                                    onTap: () {
+                                      onIconPressed();
+                                      
+                                    },
+                                  ),
+                                  MenuItem(
+                                    icon: Icons.settings_outlined,
+                                    title: "Plan Personalizado",
+                                    onTap: () {
+                                      onIconPressed();
+                                      
+                                    },
+                                  ),
+                                  MenuItem(
+                                    icon: Icons.recommend_outlined,
+                                    title: "Recomendaciones",
+                                    onTap: () {
+                                      onIconPressed();
+                                      
+                                    },
+                                  ),
+
+                                  Divider(
+                                    height: 30,
+                                    thickness: 0.5,
+                                    color: Colors.white.withOpacity(0.3),
+                                    indent: 15,
+                                    endIndent: 15,
+                                  ),
+                                  
+                                  MenuItem(
+                                    icon: Icons.exit_to_app,
+                                    title: "Logout",
+                                    onTap: () {
+                                      onIconPressed();
+                                      BlocProvider.of<NavigationBloc>(context).add(NavigationEvents.MyOrdersClickedEvent);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ],
                   ),
-                ),
                 ),
               ),
               Align(
@@ -186,17 +226,18 @@ class _SideBarState extends State<SideBar> with SingleTickerProviderStateMixin<S
                   onTap: () {
                     onIconPressed();
                   },
+                  //boton de cerrar y abrir dashbor
                   child: ClipPath(
                     clipper: CustomMenuClipper(),
                     child: Container(
                       width: 35,
                       height: 110,
-                      color: Color(0xFF262AAA),
+                      color: Color(0xFD242531),
                       alignment: Alignment.centerLeft,
                       child: AnimatedIcon(
                         progress: _animationController.view,
                         icon: AnimatedIcons.menu_close,
-                        color: Color(0xFF1BB5FD),
+                        color: Colors.white,
                         size: 25,
                       ),
                     ),
